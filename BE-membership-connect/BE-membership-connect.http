@@ -1,0 +1,6 @@
+@BE_membership_connect_HostAddress = http://localhost:5173
+
+GET {{BE_membership_connect_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
