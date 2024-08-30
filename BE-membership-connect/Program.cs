@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 DotEnv.Load();
 
 var environment = builder.Environment.EnvironmentName;
+var identityEnvironment = builder.Environment;
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
   .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
@@ -24,6 +25,7 @@ var user = Environment.GetEnvironmentVariable("DB_USER");
 var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
 var connectionString = $"Host={host};Port={port};Database={database};Username={user};Password={password}";
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 
 // This is the connection for the local database
 if (builder.Environment.IsDevelopment())
@@ -35,21 +37,11 @@ if (builder.Environment.IsDevelopment())
 // This is the connection for the docker container
 if (builder.Environment.IsStaging())
 {
-  builder.Services.AddDbContext<AppDbContext>(options =>
+  builder.Services.AddDbContext<StagingDbContext>(options =>
       options.UseNpgsql("DefaultConnection"));
 }
 
-builder.Services.AddIdentityCore<AppUser>(options =>
-{
-  options.User.RequireUniqueEmail = true;
-  options.Password.RequireDigit = true;
-  options.Password.RequireLowercase = true;
-  options.Password.RequireUppercase = true;
-  options.Password.RequireNonAlphanumeric = true;
-  options.Password.RequiredLength = 8;
-})
-  .AddEntityFrameworkStores<AppDbContext>()
-  .AddApiEndpoints();
+builder.Services.LoadIdentityByEnvironment(identityEnvironment);
 
 // Add services to the container.
 builder.Services.AddAuthorization();
@@ -95,6 +87,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 var app = builder.Build();
+
+app.ApplyMigrations();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
