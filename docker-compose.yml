@@ -1,0 +1,51 @@
+services:
+  db-service:
+    image: postgres:latest
+    container_name: postgres-db-container
+    restart: always
+    environment:
+      DB_NAME: container-db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    ports:
+      - '5432:5432'
+
+  backend-service:
+    build:
+      context: ./BE-membership-connect
+      dockerfile: Dockerfile
+    container_name: backend-container
+    depends_on:
+      - db-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+      ASPNETCORE_URLS: 'http://+:5000;'
+      ConnectionStrings__DefaultConnection: 'Host=db-service;Port=5432;Database=container-db;Username=postgres;Password=postgres;'
+    ports:
+      - '5000:5000'
+    networks:
+      - app-network
+
+  frontend-service:
+    build:
+      context: ./FE-membership-connect
+      dockerfile: Dockerfile
+    container_name: frontend-container
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend-service
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
