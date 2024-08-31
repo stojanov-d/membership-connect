@@ -38,7 +38,7 @@ if (builder.Environment.IsDevelopment())
 if (builder.Environment.IsStaging())
 {
   builder.Services.AddDbContext<StagingDbContext>(options =>
-      options.UseNpgsql("DefaultConnection"));
+      options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 
 builder.Services.LoadIdentityByEnvironment(identityEnvironment);
