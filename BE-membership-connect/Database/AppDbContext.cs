@@ -14,6 +14,10 @@ namespace BE_membership_connect.Database
         {
         }
 
+        public DbSet<Membership> Memberships { get; set; }
+        public DbSet<UserMembership> UserMemberships { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
