@@ -1,5 +1,9 @@
 using BE_membership_connect.Database;
 using BE_membership_connect.Models;
+using BE_membership_connect.Repository;
+using BE_membership_connect.Repository.Interfaces;
+using BE_membership_connect.Services;
+using BE_membership_connect.Services.Interfaces;
 using dotenv.net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,19 +31,18 @@ var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 var connectionString = $"Host={host};Port={port};Database={database};Username={user};Password={password}";
 Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 
+
+builder.Services.AddScoped<IMembershipService, MembershipService>();
+builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
+
 // This is the connection for the local database
-if (builder.Environment.IsDevelopment())
-{
-  builder.Services.AddDbContext<AppDbContext>(options =>
-      options.UseNpgsql(connectionString));
-}
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 
 // This is the connection for the docker container
-if (builder.Environment.IsStaging())
-{
-  builder.Services.AddDbContext<StagingDbContext>(options =>
-      options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-}
+builder.Services.AddDbContext<StagingDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.LoadIdentityByEnvironment(identityEnvironment);
 
