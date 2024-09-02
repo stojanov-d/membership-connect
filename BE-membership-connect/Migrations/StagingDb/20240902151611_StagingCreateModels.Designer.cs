@@ -3,6 +3,7 @@ using System;
 using BE_membership_connect.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BE_membership_connect.Migrations.StagingDb
 {
     [DbContext(typeof(StagingDbContext))]
-    partial class StagingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240902151611_StagingCreateModels")]
+    partial class StagingCreateModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
