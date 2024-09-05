@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ################################################################################
 # Build Stage: Build the .NET Core Application
 ################################################################################
@@ -18,7 +20,7 @@ COPY BE-membership-connect/. ./
 
 # Build and publish the application
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet publish -a ${TARGETARCH/amd64/x64} --use-current-runtime --self-contained false -o /app
+    dotnet publish -r linux-musl-x64 --use-current-runtime --self-contained false -o /app
 
 ################################################################################
 # Final Stage: Set up the runtime environment to run the application
