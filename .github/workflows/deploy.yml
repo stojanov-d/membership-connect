@@ -1,0 +1,27 @@
+name: Deploy to Kubernetes Cluster
+
+on:
+  workflow_run:
+    workflows: ["Backend CI/CD Pipeline", "Frontend CI/CD Pipeline"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
+
+      # Ensure k3d cluster is running and accessible
+      - name: Deploy to k3d cluster
+        run: |
+          kubectl apply -f kubernetes/namespace.yml
+          kubectl apply -f kubernetes/backend-deployment.yml
+          kubectl apply -f kubernetes/frontend-deployment.yml
+          kubectl apply -f kubernetes/postgres-statefulset.yml
+          kubectl apply -f kubernetes/ingress.yml
+          kubectl apply -f kubernetes/secret.yml
