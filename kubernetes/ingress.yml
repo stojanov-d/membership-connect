@@ -5,9 +5,8 @@ metadata:
   namespace: mc-namespace
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: 'web'
-    traefik.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: traefik # Replace the deprecated annotation with this field
+  ingressClassName: traefik
   rules:
     - host: localhost
       http:
