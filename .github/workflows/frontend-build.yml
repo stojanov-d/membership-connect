@@ -38,5 +38,5 @@ jobs:
       # Build and push the frontend Docker image
       - name: Build and push Frontend image
         run: |
-          docker build -t acrmembershipconnect.azurecr.io/frontend-image:latest -f FE-membership-connect/Dockerfile .
+          docker build -t acrmembershipconnect.azurecr.io/frontend-image:latest -f FE-membership-connect/Dockerfile ./FE-membership-connect
           docker push acrmembershipconnect.azurecr.io/frontend-image:latest
