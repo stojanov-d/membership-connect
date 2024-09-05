@@ -14,18 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Setup .NET Core
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '8.0.x'
 
-      # Restore dependencies and build the project
+      # Build the project
       - name: Build .NET project
         run: |
           cd BE-membership-connect
           dotnet restore
-          dotnet publish -c Release -o /app
+          dotnet publish -c Release -o ./publish
 
       # Log in to Azure Container Registry
       - name: Log in to Azure Container Registry
