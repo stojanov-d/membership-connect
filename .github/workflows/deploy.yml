@@ -8,20 +8,25 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Using a self-hosted runner
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      # Check out the repository so that the Kubernetes manifests are available
+      # Check out the code
       - name: Check out the repository
         uses: actions/checkout@v2
 
+      # Set up kubectl
       - name: Set up kubectl
         uses: azure/setup-kubectl@v1
         with:
           version: 'latest'
 
-      # Ensure k3d cluster is running and accessible
-      - name: Deploy to k3d cluster
+      # Export KUBECONFIG (if it's not already set up globally)
+      - name: Set KUBECONFIG
+        run: echo "KUBECONFIG=/path/to/your/kubeconfig" >> $GITHUB_ENV
+
+      # Ensure the cluster is accessible
+      - name: Deploy to Kubernetes
         run: |
           kubectl apply -f kubernetes/namespace.yml
           kubectl apply -f kubernetes/backend-deployment.yml
@@ -29,4 +34,3 @@ jobs:
           kubectl apply -f kubernetes/postgres-statefulset.yml
           kubectl apply -f kubernetes/ingress.yml
           kubectl apply -f kubernetes/secret.yml
-
