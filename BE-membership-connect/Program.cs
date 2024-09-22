@@ -48,6 +48,20 @@ builder.Services.AddDbContext<StagingDbContext>(options =>
 
 builder.Services.LoadIdentityByEnvironment(identityEnvironment);
 
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy("AllowFrontend",
+      builder =>
+      {
+        builder.WithOrigins("http://localhost:3000") // Replace with your frontend URL
+                 .AllowAnyHeader()
+                 .AllowAnyMethod()
+                 .AllowCredentials(); // Include this if using authentication or cookies
+      });
+});
+
+
+
 // Add services to the container.
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(options =>
@@ -102,6 +116,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
   app.UseSwaggerUI();
 }
 
+app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
