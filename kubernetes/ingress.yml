@@ -11,6 +11,20 @@ spec:
     - host: localhost
       http:
         paths:
+          - path: /WeatherForecast
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 5000
+          - path: /Memberships
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 5000
           - path: /swagger
             pathType: Prefix
             backend:
