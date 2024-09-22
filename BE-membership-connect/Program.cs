@@ -8,7 +8,6 @@ using dotenv.net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +55,7 @@ builder.Services.AddCors(options =>
         builder.WithOrigins("http://localhost:3000", "http://membershipconnect") // Replace with your frontend URL
                  .AllowAnyHeader()
                  .AllowAnyMethod()
-                 .AllowCredentials(); // Include this if using authentication or cookies
+                 .AllowCredentials();
       });
 });
 

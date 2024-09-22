@@ -30,12 +30,10 @@ export default function AddMembershipPage() {
 				durationInMonths: parseInt(durationInMonths, 10),
 			});
 			setSuccess(result);
-			// Clear the form
 			setName('');
 			setPrice('');
 			setDescription('');
 			setDurationInMonths('');
-			// Redirect to the landing page after a short delay
 			setTimeout(() => navigate('/'), 1000);
 		} catch (error) {
 			console.error('Failed to add membership:', error);

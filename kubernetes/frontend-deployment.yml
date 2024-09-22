@@ -18,9 +18,6 @@ spec:
       containers:
         - name: frontend-container
           image: acrmembershipconnect.azurecr.io/frontend-image:latest
-          env:
-            - name: REACT_APP_API_BASE_URL
-              value: 'http://membershipconnect'
           ports:
             - containerPort: 80
 
