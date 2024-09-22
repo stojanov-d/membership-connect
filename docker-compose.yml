@@ -35,6 +35,8 @@ services:
     build:
       context: ./FE-membership-connect
       dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_BASE_URL=http://localhost:5000
     container_name: frontend-container
     ports:
       - '3000:80'
@@ -42,6 +44,8 @@ services:
       - backend-service
     networks:
       - app-network
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:5000
 
 volumes:
   db_data:
