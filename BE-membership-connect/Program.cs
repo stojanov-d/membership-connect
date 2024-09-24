@@ -27,7 +27,7 @@ var database = Environment.GetEnvironmentVariable("DB_NAME");
 var user = Environment.GetEnvironmentVariable("DB_USER");
 var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-Console.WriteLine($"Testing CI/CD with GitHub Actions..");
+Console.WriteLine($"Testing CI/CD with GitHub Actions.");
 
 var connectionString = $"Host={host};Port={port};Database={database};Username={user};Password={password}";
 Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");

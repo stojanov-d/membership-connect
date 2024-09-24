@@ -25,7 +25,7 @@ export default function LandingPage() {
 			setLoading(false);
 		} catch (err) {
 			setError(
-				'Failed to fetch memberships. Please check your API configuration.'
+				'Failed to fetch memberships. Please check your API configuration..'
 			);
 			setLoading(false);
 		}
